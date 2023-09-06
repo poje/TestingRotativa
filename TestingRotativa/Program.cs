@@ -39,15 +39,21 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
-app.MapPost("/reporte-rotativa", (IGeneratePdf generatePdf, string html) =>
+app.MapPost("/reporte-rotativa-with-htmlparam", (IGeneratePdf generatePdf, string html) =>
+{
+    var result = generatePdf.GetPDF(html);
+
+    return result;
+});
+
+app.MapPost("/reporte-rotativa-with-template", (IGeneratePdf generatePdf) =>
 {
     var htmlCode = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "Template\\TemplateInscrito.html");
 
     htmlCode = htmlCode.Replace("@nombreInscrito", "Jorge Villaseca");
 
-    //var result = generatePdf.GetPDF(htmlCode);
-    var result = generatePdf.GetPDF(html);
-
+    var result = generatePdf.GetPDF(htmlCode);
+    
     return result;
 });
 
